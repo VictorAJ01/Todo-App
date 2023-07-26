@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthLayout } from "./layout/Auth.layout";
 import { Login } from "./modules/Authentication/Login";
 import { SignUp } from "./modules/Authentication/SignUp";
+import { Dashboard } from "./modules/Dashboard";
 
 // Plus Jakarta Sans font variables
 import "@fontsource/plus-jakarta-sans";
@@ -40,6 +41,10 @@ function App(): JSX.Element {
         <Route path="/" element={<AuthLayout />}>
           <Route path="" index element={<SignUp />} />
           <Route path="login" element={<Login />} />
+        </Route>
+
+        <Route>
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

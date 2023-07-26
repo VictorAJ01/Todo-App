@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ComparePassword } from "../utils/helper";
 import { GetDb } from "../database";
+// import { createToken } from "./create_jwt_controller";
 
 export async function LoginController(req: Request, res: Response) {
   const { username, password } = req.body;
@@ -17,9 +18,9 @@ export async function LoginController(req: Request, res: Response) {
   const isValid = ComparePassword(password, (userDB as any).password);
 
   if (isValid) {
-    req.cookies = userDB;
-    res.status(200).send("Logged in successfully");
-  } else {
-    return res.send(401);
+    // const userId = String(userDB?._id);
+    // const token = createToken(userId);
+    return res.status(200).send({ msg: "Logged in successfully" });
   }
+  return res.send(401);
 }

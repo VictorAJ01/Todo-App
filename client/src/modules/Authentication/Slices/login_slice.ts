@@ -15,7 +15,7 @@ export const userLogin = createAsyncThunk(
   `${NAMESPACE}/login`,
   async (payload: FormInputs) => {
     const response = await axios.post(
-      "http://localhost:5000/api/auth/login",
+      "http://localhost:5000/api/v1/auth/login",
       payload
     );
     return response;
