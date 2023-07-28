@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/index.ts",
-    "start:dev": "nodemon --exec ts-node ./src/index.ts"
+    "prebuild": "rimraf build",
+    "build": "tsc -b",
+    "start": "nodemon --exec ts-node ./src/index.ts && npm run build"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +20,9 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.6.0",
-    "mongoose": "^7.3.1"
+    "mongoose": "^7.3.1",
+    "rimraf": "^5.0.1",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
