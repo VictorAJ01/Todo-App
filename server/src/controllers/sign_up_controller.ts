@@ -12,12 +12,12 @@ export async function SignUpController(req: Request, res: Response) {
   const userDB = await userCollection.findOne({ username });
 
   if (userDB) {
-    res.status(400).send({ msg: "User already exist!" });
+    res.status(400).send({ message: "User already exist!" });
   } else {
     const password = HashPassword(req.body.password);
     const newUser = await userCollection.insertOne({ username, password });
     const userId = String(newUser.insertedId);
     const token = createToken(userId);
-    res.status(201).send({ msg: "User created successfully", token });
+    res.status(201).send({ message: "User created successfully", token });
   }
 }
