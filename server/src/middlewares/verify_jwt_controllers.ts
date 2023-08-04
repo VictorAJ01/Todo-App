@@ -1,5 +1,5 @@
 import { Request } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -7,16 +7,20 @@ dotenv.config();
 const processEnv = process.env as NodeJS.ProcessEnv;
 
 export const verifyToken = (req: Request) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  let token: string | string[] | undefined = req.headers["x-api-key"];
+
+  if (Array.isArray(token)) {
+    token = token[0];
+  }
 
   if (!token) {
     throw new Error("Unauthorized: No token provided.");
   }
 
-  const decoded = jwt.verify(token, processEnv.JWT_SECRET!);
-
-  if (decoded === "string") {
-    throw new Error("Invalid");
+  try {
+    const decoded = jwt.verify(token, processEnv.JWT_SECRET!) as JwtPayload;
+    return { id: decoded.id };
+  } catch (error) {
+    throw new Error("Unauthorized: Invalid token.");
   }
-  return { id: decoded };
 };

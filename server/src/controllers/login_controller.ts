@@ -21,7 +21,10 @@ export async function LoginController(req: Request, res: Response) {
     if (isValid) {
       const userId = String(userDB?._id);
       const token = createToken(userId);
-      return res.status(200).send({ message: "Logged in successfully", token });
+      return res.status(200).send({
+        message: "Logged in successfully",
+        payload: { token },
+      });
     }
     return res.send(401);
   } catch (error) {

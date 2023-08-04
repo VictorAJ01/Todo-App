@@ -11,8 +11,12 @@ export interface AuthFormProps {
   onSubmit: SubmitHandler<FormInputs>;
 }
 
+export interface LoginResponsePayload {
+  token: string;
+}
+
 export interface AuthState {
   status: HttpStatus;
   message?: string;
-  response?: string;
+  response?: LoginResponsePayload;
 }

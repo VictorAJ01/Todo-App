@@ -1,19 +1,28 @@
 import { Box, Text, useToast } from "@chakra-ui/react";
-import { AuthForm } from "../../../components/AuthForm";
-import { SubmitHandler } from "react-hook-form";
-import { FormInputs } from "../auth.interface";
-import { resetAuthState, userSignUp } from "../Slices/sign_up_slice";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
 import React from "react";
+
+import { SubmitHandler } from "react-hook-form";
+
+import { AuthForm } from "../../../components/AuthForm";
+import { FormInputs } from "../auth.interface";
+
+import { resetAuthState, userSignUp } from "../Slices/sign_up_slice";
+
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { HttpStatus } from "../../../commons";
 import { RootState } from "../../../redux/app/store";
+import { useNavigate } from "react-router";
 
 export const SignUp = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleNavigate = React.useCallback(() => {
+    navigate("/dashboard", { replace: true });
+  }, [navigate]);
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    console.log(data);
     dispatch(userSignUp(data));
   };
 
@@ -23,12 +32,14 @@ export const SignUp = (): JSX.Element => {
     const { status, message } = userSignUpState;
     if (status === HttpStatus.DONE) {
       toast({ description: "User created successfully", status: "success" });
+      handleNavigate();
     }
     if (status === HttpStatus.ERROR) {
       toast({ description: message, status: "error" });
     }
     dispatch(resetAuthState());
-  }, [userSignUpState, toast, dispatch]);
+  }, [userSignUpState, toast, dispatch, handleNavigate]);
+
   return (
     <Box
       w={{ base: "90%", md: "30rem", lg: "36.25rem" }}

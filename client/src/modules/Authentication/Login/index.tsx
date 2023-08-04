@@ -5,14 +5,22 @@ import { AuthForm } from "../../../components/AuthForm";
 import { SubmitHandler } from "react-hook-form";
 import { FormInputs } from "../auth.interface";
 
-import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { userLogin, resetAuthState } from "../Slices/login_slice";
+
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { RootState } from "../../../redux/app/store";
 import { HttpStatus } from "../../../commons";
+
+import { useNavigate } from "react-router";
 
 export const Login = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleNavigate = React.useCallback(() => {
+    navigate("/dashboard", { replace: true });
+  }, [navigate]);
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     dispatch(userLogin(data));
@@ -21,15 +29,16 @@ export const Login = (): JSX.Element => {
   const userLoginState = useAppSelector((state: RootState) => state.login);
 
   React.useEffect(() => {
-    const { status } = userLoginState;
+    const { status, message } = userLoginState;
     if (status === HttpStatus.DONE) {
       toast({ description: "Logged in successfully", status: "success" });
+      handleNavigate();
     }
     if (status === HttpStatus.ERROR) {
-      toast({ description: "Login failed, Try again!", status: "error" });
+      toast({ description: message, status: "error" });
     }
     dispatch(resetAuthState());
-  }, [userLoginState, toast, dispatch]);
+  }, [userLoginState, toast, dispatch, handleNavigate]);
 
   return (
     <Box

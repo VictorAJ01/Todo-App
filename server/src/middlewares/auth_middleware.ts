@@ -25,7 +25,7 @@ export const FormValidation = async (
         const errorMessages = error.issues.map((issue) => issue.message);
 
         // Send the error messages as part of the response
-        return res.status(400).json({ message: errorMessages });
+        return res.status(400).json({ message: errorMessages.join(" ") });
       }
 
       next(error);

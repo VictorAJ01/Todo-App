@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { HttpStatus } from "../../../commons";
-import axios from "axios";
-import { FormInputs, AuthState } from "../auth.interface";
+import { HttpStatus, setCredentials } from "../../../commons";
+import { Api } from "../../../utils";
+import { FormInputs, AuthState, LoginResponsePayload } from "../auth.interface";
 
 const NAMESPACE = "USER_LOGIN";
 
@@ -14,8 +14,8 @@ const initialState: AuthState = {
 export const userLogin = createAsyncThunk(
   `${NAMESPACE}/login`,
   async (payload: FormInputs) => {
-    const response = await axios.post(
-      "http://localhost:5000/api/v1/auth/login",
+    const response = await Api.post<LoginResponsePayload, LoginResponsePayload>(
+      "/auth/login",
       payload
     );
     return response;
@@ -26,13 +26,16 @@ export const LoginSlice = createSlice({
   name: NAMESPACE,
   initialState,
   reducers: {
-    resetAuthState: () => initialState,
+    resetAuthState: (state) => {
+      state.status = HttpStatus.IDLE;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(userLogin.pending, (state) => {
       state.status = HttpStatus.LOADING;
     });
-    builder.addCase(userLogin.fulfilled, (state) => {
+    builder.addCase(userLogin.fulfilled, (state, { payload }) => {
+      setCredentials(payload.token);
       state.status = HttpStatus.DONE;
     });
     builder.addCase(userLogin.rejected, (state, { error }) => {

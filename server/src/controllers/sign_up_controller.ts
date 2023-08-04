@@ -18,6 +18,8 @@ export async function SignUpController(req: Request, res: Response) {
     const newUser = await userCollection.insertOne({ username, password });
     const userId = String(newUser.insertedId);
     const token = createToken(userId);
-    res.status(201).send({ message: "User created successfully", token });
+    res
+      .status(201)
+      .send({ message: "User created successfully", payload: { token } });
   }
 }
