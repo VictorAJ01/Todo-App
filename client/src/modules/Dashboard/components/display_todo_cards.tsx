@@ -2,9 +2,8 @@ import { Box, HStack } from "@chakra-ui/react";
 import React from "react";
 
 import { TodoCard } from "./todo_card";
-import { TodoData } from "./todo_data";
 import { TodoInitialState } from "./todo_initial_state";
-import { TodoResponseObject } from "../dashboard_type";
+import { TodoResponsePayload } from "../dashboard_type";
 
 import { MdDeleteOutline } from "react-icons/md";
 
@@ -43,7 +42,7 @@ export const DisplayTodoCards = (): JSX.Element => {
           flexDir="column"
           gap={{ base: "1rem", md: "1.5rem" }}
         >
-          {TodoData.map((item: TodoResponseObject) => {
+          {response.todo.map((item: TodoResponsePayload) => {
             return (
               <HStack
                 px={{ base: ".5rem", md: "1rem" }}
@@ -51,13 +50,13 @@ export const DisplayTodoCards = (): JSX.Element => {
                 borderRadius={{ lg: "1rem" }}
                 bg="#F4F2FF"
                 color="black"
-                key={item.id}
+                key={item._id}
                 spacing={4}
               >
                 <TodoCard item={item} handleSelectedId={handleSelectedId} />
 
                 <Box
-                  display={selectedId.includes(item.id) ? "initial" : "none"}
+                  display={selectedId.includes(item._id) ? "initial" : "none"}
                 >
                   <MdDeleteOutline size={22} color="#111" />
                 </Box>

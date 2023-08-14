@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { HashPassword } from "../utils/helper";
-import { GetDb } from "../database";
-import { createToken } from "../middlewares/create_jwt_controller";
+import { HashPassword } from "../../utils/helper";
+import { GetDb } from "../../database";
+import { createToken } from "../../middlewares/create_jwt_controller";
+import { todoList } from "../../utils/data";
 
 export async function SignUpController(req: Request, res: Response) {
   const { username } = req.body;
@@ -15,7 +16,11 @@ export async function SignUpController(req: Request, res: Response) {
     res.status(400).send({ message: "User already exist!" });
   } else {
     const password = HashPassword(req.body.password);
-    const newUser = await userCollection.insertOne({ username, password });
+    const newUser = await userCollection.insertOne({
+      username,
+      password,
+      todo: todoList,
+    });
     const userId = String(newUser.insertedId);
     const token = createToken(userId);
     res

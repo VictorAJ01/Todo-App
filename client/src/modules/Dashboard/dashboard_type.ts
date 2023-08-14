@@ -3,7 +3,12 @@ import { HttpStatus } from "../../commons";
 export interface TodoResponseObject {
   id: string;
   todo: string;
-  time: string;
+  color: string;
+}
+
+export interface TodoResponsePayload {
+  _id: string;
+  todo: string;
   color: string;
 }
 
@@ -12,7 +17,7 @@ export interface GetUserDetailsResponse {
     _id: string;
     username: string;
   };
-  todo: Array<string>;
+  todo: Array<TodoResponsePayload>;
 }
 
 export interface GetUserDetailsState {

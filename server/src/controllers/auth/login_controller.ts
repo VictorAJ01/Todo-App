@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { ComparePassword } from "../utils/helper";
-import { GetDb } from "../database";
-import { createToken } from "../middlewares/create_jwt_controller";
+import { ComparePassword } from "../../utils/helper";
+import { GetDb } from "../../database";
+import { createToken } from "../../middlewares/create_jwt_controller";
 
 export async function LoginController(req: Request, res: Response) {
   try {

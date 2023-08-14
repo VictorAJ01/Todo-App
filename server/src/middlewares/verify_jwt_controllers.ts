@@ -7,7 +7,8 @@ dotenv.config();
 const processEnv = process.env as NodeJS.ProcessEnv;
 
 export const verifyToken = (req: Request) => {
-  let token: string | string[] | undefined = req.headers["x-api-key"];
+  let token: string | string[] | undefined =
+    req.headers["x-api-key"] || req.headers.authorization?.split(" ")[1];
 
   if (Array.isArray(token)) {
     token = token[0];

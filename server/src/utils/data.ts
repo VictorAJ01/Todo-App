@@ -1,1 +1,1 @@
-export const todoList = [];
+export const todoList: Array<{ title: string }> = [];
